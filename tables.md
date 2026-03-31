@@ -4,14 +4,6 @@
 
 ### Cleaner large-batch study on CIFAR-10
 
-Following the reviewer’s suggestion, we performed a cleaner large-batch study on CIFAR-10, starting from the Opacus reference setup and re-scaling the DP-SGD parameters across batch sizes following the TAN scaling rule from *TAN Without a Burn* (ICML 2023).
-
-For reference, we match the individual signal-to-noise ratio
-\[
-\eta^2 = \frac{1}{\Sigma^2} := \frac{q^2 S}{2\sigma^2},
-\]
-where \(q\) is the sampling rate, \(S\) is the number of training steps, and \(\sigma\) is the noise multiplier.
-
 #### Resulting settings
 
 | Batch Size | σ | K (SlaClip) | Steps / Epoch | Epochs |
