@@ -5,6 +5,11 @@
 ### Cleaner large-batch study on CIFAR-10
 
 #### Resulting settings
+We follow the TAN scaling rule by matching the individual signal-to-noise quantity
+\[
+\eta^2 = \frac{1}{\Sigma^2} := \frac{q^2 S}{2\sigma^2},
+\]
+where \(q\) is the sampling rate, \(S\) is the number of training steps, and \(\sigma\) is the noise multiplier.
 
 | Batch Size | σ | K (SlaClip) | Steps / Epoch | Epochs |
 | --- | --- | --- | --- | --- |
