@@ -2,26 +2,23 @@
 
 ## Reviewer iPfu
 
-### Cleaner large-batch study on CIFAR-10
+### CIFAR-10 cleaner large-batch study
 
 #### Resulting settings
-We follow the TAN scaling rule by matching the individual signal-to-noise quantity
+The DP-SGD parameters are re-scaled according to the following equation from *TAN Without a Burn* (ICML 2023):
 
 $$
 \eta^2 = \frac{1}{\Sigma^2} := \frac{q^2 S}{2\sigma^2}
 $$
 
-where $q$ is the sampling rate, $S$ is the number of training steps, and $\sigma$ is the noise multiplier.
+| Batch Size | LR | σ | K (SlaClip) | Steps / Epoch | Epochs |
+| --- | --- | --- | --- | --- | --- |
+| 256 | 0.05 | 0.584216 | 16 | 196 | 12 |
+| 512 | 0.10 | 0.707991 | 24 | 98 | 23 |
+| 1024 | 0.20 | 0.956412 | 32 | 49 | 46 |
+| 2048 | 0.40 | 1.500000 | 40 | 25 | 90 |
+| 4096 | 0.80 | 2.629017 | 44 | 13 | 174 |
 
-| Batch Size | σ | K (SlaClip) | Steps / Epoch | Epochs |
-| --- | --- | --- | --- | --- |
-| 256 | 0.584216 | 16 | 196 | 12 |
-| 512 | 0.707991 | 24 | 98 | 23 |
-| 1024 | 0.956412 | 32 | 49 | 46 |
-| 2048 | 1.500000 | 40 | 25 | 90 |
-| 4096 | 2.629017 | 44 | 13 | 174 |
-
-#### Accuracy results
 
 | ε | Method | 256 | 512 | 1024 | 2048 | 4096 |
 | ---: | --- | ---: | ---: | ---: | ---: | ---: |
@@ -41,7 +38,7 @@ where $q$ is the sampling rate, $S$ is the number of training steps, and $\sigma
 
 ### Sub-1 privacy regime on MNIST
 
-| Step | ε | Vanilla-Clip | DC-SGD-E | SLaClip |
+| Step | ε | Vanilla-Clip | DC-SGD-E | SlaClip |
 |---:|---:|---:|---:|---:|
 | 1 | 0.9160 | 14.16 ± 1.15 | 14.16 ± 1.17 | 14.01 ± 1.19 |
 | 2 | 0.9341 | 19.37 ± 2.20 | 21.52 ± 3.29 | 19.85 ± 2.55 |
