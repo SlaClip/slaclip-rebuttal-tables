@@ -1,6 +1,6 @@
 # Supplementary Tables
 
-## Reviewer 3
+## Reviewer uJLz
 
 ### Sub-1 privacy regime on F-MNIST
 
