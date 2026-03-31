@@ -4,7 +4,6 @@
 
 ### CIFAR-10 cleaner large-batch study
 
-#### Resulting settings
 The DP-SGD parameters are re-scaled according to the following equation from *TAN Without a Burn* (ICML 2023):
 
 $$
