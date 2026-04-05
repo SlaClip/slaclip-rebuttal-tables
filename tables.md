@@ -57,3 +57,118 @@ $$
 
 <h3>Toy pipeline example (C<sub>t</sub> = 5, K = 5)</h3> <p> Below is a toy step-by-step illustration of the full pipeline. The SlaClip column shows how the same Gaussian release can carry both the clipped gradient and a cumulative indicator, whereas the Adap-Clip column uses a separate private query for the clipping statistic. </p> <table> <thead> <tr> <th>Steps</th> <th>Vanilla DP-SGD</th> <th>SlaClip</th> <th>Adap-Clip</th> </tr> </thead> <tbody> <tr> <td><b>Step I: Gradient computation</b></td> <td> g<sub>14</sub> = (14), ‖g<sub>14</sub>‖ = 14<br> g<sub>13</sub> = (13), ‖g<sub>13</sub>‖ = 13<br> g<sub>12</sub> = (12), ‖g<sub>12</sub>‖ = 12<br> g<sub>11</sub> = (11), ‖g<sub>11</sub>‖ = 11<br> g<sub>10</sub> = (10), ‖g<sub>10</sub>‖ = 10<br> g<sub>9</sub> = (9), ‖g<sub>9</sub>‖ = 9<br> g<sub>8</sub> = (8), ‖g<sub>8</sub>‖ = 8<br> g<sub>7</sub> = (7), ‖g<sub>7</sub>‖ = 7<br> g<sub>6</sub> = (6), ‖g<sub>6</sub>‖ = 6<br> g<sub>5</sub> = (5), ‖g<sub>5</sub>‖ = 5<br> g<sub>4</sub> = (4), ‖g<sub>4</sub>‖ = 4<br> g<sub>3</sub> = (3), ‖g<sub>3</sub>‖ = 3<br> g<sub>2</sub> = (2), ‖g<sub>2</sub>‖ = 2<br> g<sub>1</sub> = (1), ‖g<sub>1</sub>‖ = 1<br> g<sub>0</sub> = (0), ‖g<sub>0</sub>‖ = 0 </td> <td> g<sup>+</sup><sub>14</sub> = (14; <b>0,0,0,0,0</b>), ‖g<sub>14</sub>‖ = 14<br> g<sup>+</sup><sub>13</sub> = (13; <b>0,0,0,0,0</b>), ‖g<sub>13</sub>‖ = 13<br> g<sup>+</sup><sub>12</sub> = (12; <b>0,0,0,0,0</b>), ‖g<sub>12</sub>‖ = 12<br> g<sup>+</sup><sub>11</sub> = (11; <b>0,0,0,0,0</b>), ‖g<sub>11</sub>‖ = 11<br> g<sup>+</sup><sub>10</sub> = (10; <b>0,0,0,0,0</b>), ‖g<sub>10</sub>‖ = 10<br> g<sup>+</sup><sub>9</sub> = (9; <b>0,0,0,0,0</b>), ‖g<sub>9</sub>‖ = 9<br> g<sup>+</sup><sub>8</sub> = (8; <b>0,0,0,0,0</b>), ‖g<sub>8</sub>‖ = 8<br> g<sup>+</sup><sub>7</sub> = (7; <b>0,0,0,0,0</b>), ‖g<sub>7</sub>‖ = 7<br> g<sup>+</sup><sub>6</sub> = (6; <b>0,0,0,0,0</b>), ‖g<sub>6</sub>‖ = 6<br> g<sup>+</sup><sub>5</sub> = (5; <b>0,0,0,0,0</b>), ‖g<sub>5</sub>‖ = 5<br> g<sup>+</sup><sub>4</sub> = (4; <b>0,0,0,0,0</b>), ‖g<sub>4</sub>‖ = 4<br> g<sup>+</sup><sub>3</sub> = (3; <b>0,0,0,0,0</b>), ‖g<sub>3</sub>‖ = 3<br> g<sup>+</sup><sub>2</sub> = (2; <b>0,0,0,0,0</b>), ‖g<sub>2</sub>‖ = 2<br> g<sup>+</sup><sub>1</sub> = (1; <b>0,0,0,0,0</b>), ‖g<sub>1</sub>‖ = 1<br> g<sup>+</sup><sub>0</sub> = (0; <b>0,0,0,0,0</b>), ‖g<sub>0</sub>‖ = 0 </td> <td> g<sub>14</sub> = (14), ‖g<sub>14</sub>‖ = 14<br> g<sub>13</sub> = (13), ‖g<sub>13</sub>‖ = 13<br> g<sub>12</sub> = (12), ‖g<sub>12</sub>‖ = 12<br> g<sub>11</sub> = (11), ‖g<sub>11</sub>‖ = 11<br> g<sub>10</sub> = (10), ‖g<sub>10</sub>‖ = 10<br> g<sub>9</sub> = (9), ‖g<sub>9</sub>‖ = 9<br> g<sub>8</sub> = (8), ‖g<sub>8</sub>‖ = 8<br> g<sub>7</sub> = (7), ‖g<sub>7</sub>‖ = 7<br> g<sub>6</sub> = (6), ‖g<sub>6</sub>‖ = 6<br> g<sub>5</sub> = (5), ‖g<sub>5</sub>‖ = 5<br> g<sub>4</sub> = (4), ‖g<sub>4</sub>‖ = 4<br> g<sub>3</sub> = (3), ‖g<sub>3</sub>‖ = 3<br> g<sub>2</sub> = (2), ‖g<sub>2</sub>‖ = 2<br> g<sub>1</sub> = (1), ‖g<sub>1</sub>‖ = 1<br> g<sub>0</sub> = (0), ‖g<sub>0</sub>‖ = 0<br><br> A separate private counter will be queried after clipping to estimate the unclipped ratio. </td> </tr> <tr> <td><b>Step II: Per-sample l<sub>2</sub> clipping — make all gradients have norm ≤ C<sub>t</sub></b></td> <td> g<sub>14</sub><sup>clip</sup> = (5)<br> g<sub>13</sub><sup>clip</sup> = (5)<br> g<sub>12</sub><sup>clip</sup> = (5)<br> g<sub>11</sub><sup>clip</sup> = (5)<br> g<sub>10</sub><sup>clip</sup> = (5)<br> g<sub>9</sub><sup>clip</sup> = (5)<br> g<sub>8</sub><sup>clip</sup> = (5)<br> g<sub>7</sub><sup>clip</sup> = (5)<br> g<sub>6</sub><sup>clip</sup> = (5)<br> g<sub>5</sub><sup>clip</sup> = (5)<br> g<sub>4</sub><sup>clip</sup> = (4)<br> g<sub>3</sub><sup>clip</sup> = (3)<br> g<sub>2</sub><sup>clip</sup> = (2)<br> g<sub>1</sub><sup>clip</sup> = (1)<br> g<sub>0</sub><sup>clip</sup> = (0) </td> <td> (g<sub>14</sub><sup>+</sup>)<sup>clip</sup> = (5; <b>0,0,0,0,0</b>)<br> (g<sub>13</sub><sup>+</sup>)<sup>clip</sup> = (5; <b>0,0,0,0,0</b>)<br> (g<sub>12</sub><sup>+</sup>)<sup>clip</sup> = (5; <b>0,0,0,0,0</b>)<br> (g<sub>11</sub><sup>+</sup>)<sup>clip</sup> = (5; <b>0,0,0,0,0</b>)<br> (g<sub>10</sub><sup>+</sup>)<sup>clip</sup> = (5; <b>0,0,0,0,0</b>)<br> (g<sub>9</sub><sup>+</sup>)<sup>clip</sup> = (5; <b>0,0,0,0,0</b>)<br> (g<sub>8</sub><sup>+</sup>)<sup>clip</sup> = (5; <b>0,0,0,0,0</b>)<br> (g<sub>7</sub><sup>+</sup>)<sup>clip</sup> = (5; <b>0,0,0,0,0</b>)<br> (g<sub>6</sub><sup>+</sup>)<sup>clip</sup> = (5; <b>0,0,0,0,0</b>)<br> (g<sub>5</sub><sup>+</sup>)<sup>clip</sup> = (5; <b>0,0,0,0,0</b>)<br> (g<sub>4</sub><sup>+</sup>)<sup>clip</sup> = (4; <b>2.24,0,0,0,0</b>)<br> (g<sub>3</sub><sup>+</sup>)<sup>clip</sup> = (3; <b>2.24,2.24,0,0,0</b>)<br> (g<sub>2</sub><sup>+</sup>)<sup>clip</sup> = (2; <b>2.24,2.24,2.24,0,0</b>)<br> (g<sub>1</sub><sup>+</sup>)<sup>clip</sup> = (1; <b>2.24,2.24,2.24,2.24,0</b>)<br> (g<sub>0</sub><sup>+</sup>)<sup>clip</sup> = (0; <b>2.24,2.24,2.24,2.24,2.24</b>)<br><br> Via Eq. (8), λ = C<sub>t</sub> / √K = √5 ≈ 2.24, which enables all extended gradients to maintain ‖g<sup>+</sup><sub>i</sub>‖ ≤ C<sub>t</sub>, by Lemma 3.2. </td> <td> g<sub>14</sub><sup>clip</sup> = (5)<br> g<sub>13</sub><sup>clip</sup> = (5)<br> g<sub>12</sub><sup>clip</sup> = (5)<br> g<sub>11</sub><sup>clip</sup> = (5)<br> g<sub>10</sub><sup>clip</sup> = (5)<br> g<sub>9</sub><sup>clip</sup> = (5)<br> g<sub>8</sub><sup>clip</sup> = (5)<br> g<sub>7</sub><sup>clip</sup> = (5)<br> g<sub>6</sub><sup>clip</sup> = (5)<br> g<sub>5</sub><sup>clip</sup> = (5)<br> g<sub>4</sub><sup>clip</sup> = (4)<br> g<sub>3</sub><sup>clip</sup> = (3)<br> g<sub>2</sub><sup>clip</sup> = (2)<br> g<sub>1</sub><sup>clip</sup> = (1)<br> g<sub>0</sub><sup>clip</sup> = (0)<br><br> An extra query is needed to count how many samples are unclipped.<br> The unclipped count is 5, so the unclipped ratio is 5/15 ≈ 0.33. </td> </tr> <tr> <td><b>Step III: Aggregate, noise and release.</b><br> (Toy illustration only: we use +0.01 per released coordinate for Vanilla DP-SGD and SlaClip.) </td> <td> <b>Aggregate:</b><br> g<sub>avg</sub> = (4)<br><br> <b>Noise and release:</b><br> g<sub>noise</sub> = (4) + N = (4.01) </td> <td> <b>Aggregate:</b><br> (g<sup>+</sup>)<sub>avg</sub> = (4; <b>0.75, 0.60, 0.45, 0.30, 0.15</b>)<br><br> <b>Noise and release:</b><br> (g<sup>+</sup>)<sub>noise</sub> = (4.01; <b>0.76, 0.61, 0.46, 0.31, 0.16</b>) </td> <td> <b>Aggregate:</b><br> g<sub>avg</sub> = (4), q = 5/15 ≈ 0.33<br><br> <b>Noise and release:</b><br> g<sub>noise</sub> = (4) + N = (4.02)<br> q<sub>noise</sub> = q + z<sub>q</sub><br> (Toy illustration only: for Adap-Clip we use a larger toy noise level, +0.02, to reflect the fact that an extra private query typically requires either a larger matched noise multiplier or a reallocation of privacy budget.) </td> </tr> <tr> <td><b>Step IV: Privacy accounting and model update.</b></td> <td> Update model using g<sub>noise</sub>, C<sub>t</sub> stays fixed. </td> <td> Update the model using the gradient part of (g<sup>+</sup>)<sub>noise</sub> (which is the same as g<sub>noise</sub> in this toy example).<br> Build the Slack Indicator by normalizing the noisy auxiliary coordinates:<br> <b>(0.76, 0.61, 0.46, 0.31, 0.16) / λ = (0.34, 0.27, 0.21, 0.14, 0.07)</b><br> Here, ŝ<sub>t,1</sub> ≈ 0.34 serves as a surrogate for the current unclipped ratio, while ŝ<sub>t,K</sub> / C<sub>t</sub> = 0.07 / 5 ≈ 0.014 serves as a surrogate for very small gradients that become nearly indistinguishable from zero under the current noise scale. Then update C<sub>t+1</sub> via Eq. (13). </td> <td> Privacy accountant composes two private releases:<br> (i) the gradient release, and<br> (ii) the extra clipping-statistic query.<br> Update the model using g<sub>noise</sub> (in this toy matched-budget illustration, a larger noise level is used than in Vanilla DP-SGD).<br> Update C<sub>t</sub> using the noisy unclipped-ratio estimate q<sub>noise</sub>. </td> </tr> </tbody> </table>
 
+
+<h3>Toy pipeline example (C<sub>t</sub> = 5, K = 5)</h3>
+<p>
+Below is a toy step-by-step illustration of the full pipeline.
+The SlaClip column shows how the same Gaussian release can carry both the clipped gradient and a cumulative indicator,
+whereas the Adap-Clip column uses a separate private query for the clipping statistic.
+</p>
+<table>
+  <thead>
+    <tr>
+      <th>Steps</th>
+      <th>Vanilla DP-SGD</th>
+      <th>SlaClip</th>
+      <th>Adap-Clip</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><b>Step I: Gradient computation</b></td>
+      <td>
+<pre>g₄ = (8), ‖g₄‖ = 8
+g₃ = (6), ‖g₃‖ = 6
+g₂ = (4), ‖g₂‖ = 4
+g₁ = (2), ‖g₁‖ = 2
+g₀ = (0), ‖g₀‖ = 0</pre>
+      </td>
+      <td>
+<pre>g⁺₄ = (8; <b>0,0,0,0,0</b>), ‖g₄‖ = 8
+g⁺₃ = (6; <b>0,0,0,0,0</b>), ‖g₃‖ = 6
+g⁺₂ = (4; <b>0,0,0,0,0</b>), ‖g₂‖ = 4
+g⁺₁ = (2; <b>0,0,0,0,0</b>), ‖g₁‖ = 2
+g⁺₀ = (0; <b>0,0,0,0,0</b>), ‖g₀‖ = 0</pre>
+      </td>
+      <td>
+<pre>g₄ = (8), ‖g₄‖ = 8
+g₃ = (6), ‖g₃‖ = 6
+g₂ = (4), ‖g₂‖ = 4
+g₁ = (2), ‖g₁‖ = 2
+g₀ = (0), ‖g₀‖ = 0</pre>
+        A separate private counter will be queried after clipping to estimate the unclipped ratio.
+      </td>
+    </tr>
+    <tr>
+      <td><b>Step II: Per-sample l<sub>2</sub> clipping — make all gradients have norm ≤ C<sub>t</sub></b></td>
+      <td>
+<pre>g₄^clip = (5)
+g₃^clip = (5)
+g₂^clip = (4)
+g₁^clip = (2)
+g₀^clip = (0)</pre>
+      </td>
+      <td>
+<pre>(g⁺₄)^clip = (5; <b>0,0,0,0,0</b>)
+(g⁺₃)^clip = (5; <b>0,0,0,0,0</b>)
+(g⁺₂)^clip = (4; <b>2.24,0,0,0,0</b>)
+(g⁺₁)^clip = (2; <b>2.24,2.24,2.24,0,0</b>)
+(g⁺₀)^clip = (0; <b>2.24,2.24,2.24,2.24,2.24</b>)</pre>
+        Via Eq. (8), λ = C<sub>t</sub> / √K = √5 ≈ 2.24, which enables all extended gradients to maintain ‖g<sup>+</sup><sub>i</sub>‖ ≤ C<sub>t</sub>, by Lemma 3.2.
+      </td>
+      <td>
+<pre>g₄^clip = (5)
+g₃^clip = (5)
+g₂^clip = (4)
+g₁^clip = (2)
+g₀^clip = (0)</pre>
+        An extra query is needed to count how many samples are unclipped.<br>
+        The unclipped count is 3, so the unclipped ratio is 3/5 = 0.60.
+      </td>
+    </tr>
+    <tr>
+      <td><b>Step III: Aggregate, noise and release.</b><br>
+        (Toy illustration only: we use +0.01 per released coordinate for Vanilla DP-SGD and SlaClip.)
+      </td>
+      <td>
+        <b>Aggregate:</b><br>
+        <pre>g_avg = (3.20)</pre>
+        <b>Noise and release:</b><br>
+        <pre>g_noise = (3.20) + N = (3.21)</pre>
+      </td>
+      <td>
+        <b>Aggregate:</b><br>
+        <pre>(g⁺)_avg   = (3.20; <b>1.34, 0.90, 0.90, 0.45, 0.45</b>)</pre>
+        <b>Noise and release:</b><br>
+        <pre>(g⁺)_noise = (3.21; <b>1.35, 0.91, 0.91, 0.46, 0.46</b>)</pre>
+      </td>
+      <td>
+        <b>Aggregate:</b><br>
+        <pre>g_avg = (3.20), q = 3/5 = 0.60</pre>
+        <b>Noise and release:</b><br>
+        <pre>g_noise = (3.20) + N = (3.22)
+q_noise = 0.60 + z_q = 0.62</pre>
+        (Toy illustration only: for Adap-Clip we use a larger toy noise level, +0.02, to reflect the fact that an extra private query typically requires either a larger matched noise multiplier or a reallocation of privacy budget.)
+      </td>
+    </tr>
+    <tr>
+      <td><b>Step IV: Privacy accounting and model update.</b></td>
+      <td>
+        Update model using g<sub>noise</sub>, C<sub>t</sub> stays fixed.
+      </td>
+      <td>
+        Update the model using the gradient part of (g<sup>+</sup>)<sub>noise</sub> (which is the same as g<sub>noise</sub> in this toy example).<br>
+        Build the Slack Indicator by normalizing the noisy auxiliary coordinates:<br>
+        <pre><b>(1.35, 0.91, 0.91, 0.46, 0.46) / λ = (0.60, 0.41, 0.41, 0.21, 0.21)</b></pre>
+        Here, ŝ<sub>t,1</sub> ≈ 0.60 serves as a surrogate for the current unclipped ratio, while ŝ<sub>t,K</sub> / C<sub>t</sub> = 0.21 / 5 = 0.042 serves as a surrogate for very small gradients that become nearly indistinguishable from zero under the current noise scale. Then update C<sub>t+1</sub> via Eq. (13).
+      </td>
+      <td>
+        Privacy accountant composes two private releases:<br>
+        (i) the gradient release, and<br>
+        (ii) the extra clipping-statistic query.<br>
+        Update the model using g<sub>noise</sub> (in this toy matched-budget illustration, a larger noise level is used than in Vanilla DP-SGD).<br>
+        Update C<sub>t</sub> using the noisy unclipped-ratio estimate q<sub>noise</sub>.
+      </td>
+    </tr>
+  </tbody>
+</table>
