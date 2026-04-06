@@ -2,7 +2,7 @@
 
 ## Reviewer k7YH
 ### Toy pipeline example
-![Toy pipeline example](toy_pipeline.jpg)
+![Toy pipeline example](toy_pipeline.png)
 
 ## Reviewer iPfu
 
