@@ -1,7 +1,7 @@
 # Supplementary figures
 
 ## Reviewer iPfu
-![Toy pipeline example](FMNIST_LINE.png)
+![Toy pipeline example](FMNIST_1.png)
 **Figure S1.** FMNIST test accuracy versus learning rate for all four baselines under the shared tuning protocol. For each method, each point shows the best test accuracy over the clipping-threshold pool $C_0 \in \{0.1, 1, 10\}$ at the corresponding learning rate $\{0.05, 0.1, 0.2, 0.5, 1.0\}$. The left panel shows the cosine schedule, and the right panel shows the constant schedule.
 
 ![Toy pipeline example](FMNIST_heatmap.png)
