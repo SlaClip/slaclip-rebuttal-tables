@@ -1,7 +1,7 @@
 # Supplementary figures
 
 ## Reviewer iPfu
-![Toy pipeline example](FMNIST_lines.png)
+![Toy pipeline example](FMNIST_LINE.png)
 ### caption
 
 ![Toy pipeline example](FMNIST_heatmap.png)
