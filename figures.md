@@ -2,7 +2,7 @@
 
 ## Reviewer iPfu
 ![Toy pipeline example](FMNIST_LINE.png)
-### caption
+**Figure S1.** FMNIST test accuracy versus learning rate for all four baselines under the shared tuning protocol. For each method, each point shows the best test accuracy over the clipping-threshold pool $C_0 \in \{0.1, 1, 10\}$ at the corresponding learning rate $\{0.05, 0.1, 0.2, 0.5, 1.0\}$. The left panel shows the cosine schedule, and the right panel shows the constant schedule.
 
 ![Toy pipeline example](FMNIST_heatmap.png)
 **Figure S2.** Heatmaps comparing the two closest adaptive clipping baselines, Adap-Clip and SlaClip, on FMNIST. The x-axis is the learning rate, and the y-axis is the initial clipping threshold $C_0 \in \{0.1, 1, 10\}$. Each cell reports the final test accuracy for one $(\text{lr}, C_0)$ pair.
